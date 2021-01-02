@@ -34,6 +34,7 @@ var taskFormHandler = function(event) {
       type: taskTypeInput,
       status: "to do"
     };
+    
 
     createTaskEl(taskDataObj);
   }
@@ -196,6 +197,20 @@ var deleteTask = function(taskId) {
   // find task list element with taskId value and remove it
   var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
   taskSelected.remove();
+
+  // create new array to hold updated list of tasks
+  var updatedTaskArr = [];
+
+  // loop through current tasks
+  for (var i = 0; i < tasks.length; i++) {
+    // if tasks[i].id doesn't match the value of taskId, keep task and push to new array
+    if (tasks[i].id !== parseInt(taskId)) {
+      updatedTaskArr.push(tasks[i]);
+    }
+  }
+
+  // reassign the tasks array to be the same as updatedTaskArr
+  tasks = updatedTaskArr;
 };
 
 var dropTaskHandler = function(event) {
@@ -221,6 +236,12 @@ var dropTaskHandler = function(event) {
       break;
     default:
       console.log("Something went wrong!");
+  }
+
+  for (var i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(id)) {
+      tasks[i].status = statusSelectEl.value.toLowerCase();
+    }
   }
 
   dropZone.appendChild(draggableElement);
