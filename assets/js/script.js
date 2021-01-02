@@ -61,9 +61,9 @@ var createTaskEl = function(taskDataObj) {
 
   // increase task counter for next unique id
   taskIdCounter++;
+  
+  saveTasks();
 
-  console.log(taskDataObj);
-  console.log(taskDataObj.status);
 };
 
 var createTaskActions = function(taskId) {
@@ -141,6 +141,8 @@ var taskButtonHandler = function(event) {
     var taskId = targetEl.getAttribute("data-task-id");
     deleteTask(taskId);
   }
+
+  saveTasks();
 };
 
 var taskStatusChangeHandler = function(event) {
@@ -167,6 +169,8 @@ var taskStatusChangeHandler = function(event) {
       tasks[i].status = statusValue;
     }
   }
+
+  saveTasks();
 };
 
 var editTask = function(taskId) {
@@ -211,6 +215,8 @@ var deleteTask = function(taskId) {
 
   // reassign the tasks array to be the same as updatedTaskArr
   tasks = updatedTaskArr;
+
+  saveTasks();
 };
 
 var dropTaskHandler = function(event) {
@@ -243,6 +249,7 @@ var dropTaskHandler = function(event) {
       tasks[i].status = statusSelectEl.value.toLowerCase();
     }
   }
+  saveTasks();
 
   dropZone.appendChild(draggableElement);
 };
@@ -270,6 +277,10 @@ var dragLeaveHandler = function(event) {
     event.target.closest(".task-list").removeAttribute("style");
   }
 };
+
+var saveTasks = function() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 // Create a new task
 formEl.addEventListener("submit", taskFormHandler);
